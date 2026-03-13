@@ -1,42 +1,12 @@
 from Functions.VerifyAnswer import VerifyAnswer
 from Functions.FilterCandidates import FilterCandidatesByWrongLetters
+from Infra.FetchInitialWord import FetchInitialWord
+from Infra.FetchAllWords import FetchAllWords
 
 def main():
 
-    candidates = [
-    "carta",
-    "piano",
-    "verde",
-    "livro",
-    "nuvem",
-    "canto",
-    "prato",
-    "lente",
-    "pedra",
-    "campo",
-    "festa",
-    "corte",
-    "poder",
-    "viver",
-    "luzir",
-    "brisa",
-    "folha",
-    "areia",
-    "caixa",
-    "pauta",
-    "sonho",
-    "claro",
-    "pular",
-    "beijo",
-    "magia",
-    "tempo",
-    "risco",
-    "linha",
-    "pilar",
-    "vento",
-    "praia"
-]
-    
+    word = FetchInitialWord()
+    candidates = FetchAllWords()
     guesses = {}
     viwwGuesses = {}
     allWrongLetters = []
@@ -44,7 +14,7 @@ def main():
     for i in range(5):
     
         guess = input("Insira sua tentativa [5 letras]: ")
-        viewTemplate, template, wrongLetters = VerifyAnswer(guess, "praia")
+        viewTemplate, template, wrongLetters = VerifyAnswer(guess, word)
 
         guesses[i] = template
         viwwGuesses[i] = viewTemplate
@@ -57,13 +27,15 @@ def main():
 
         candidates = FilterCandidatesByWrongLetters(candidates, allWrongLetters)
 
-        for word in candidates:
-            print(word)    
+        # for word in candidates:
+        #     print(word)    
 
     
         
     for i, letter in enumerate(allWrongLetters):
             print(letter, end=" ")
+
+    print("Palavra correta: ", word)
 
     return 0
 

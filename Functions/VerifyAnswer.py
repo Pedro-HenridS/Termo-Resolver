@@ -34,6 +34,7 @@ def VerifyAnswer(word: str, dayWord: str):
         if letter == dayLetter:
             viewResult[i] = "✅ " + letter
             guessVerify[i] = 1
+            dayWordLettersCount[letter] -= 1
 
         elif letter != dayLetter and letter in dayWord and dayWordLettersCount[letter] > 0:
             viewResult[i] = "🟨 " + letter
