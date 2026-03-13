@@ -1,4 +1,5 @@
 from Functions.VerifyAnswer import VerifyAnswer
+from Functions.GetPositions import GetPositions
 from Functions.FilterCandidates import FilterCandidatesByWrongLetters
 from Infra.FetchInitialWord import FetchInitialWord
 from Infra.FetchAllWords import FetchAllWords
@@ -10,10 +11,12 @@ def main():
     guesses = {}
     viwwGuesses = {}
     allWrongLetters = []
+    guessedWords = []
 
     for i in range(5):
     
         guess = input("Insira sua tentativa [5 letras]: ")
+        guessedWords.append(guess)
         viewTemplate, template, wrongLetters = VerifyAnswer(guess, word)
 
         guesses[i] = template
@@ -29,7 +32,7 @@ def main():
 
         # for word in candidates:
         #     print(word)    
-
+        GetPositions(guesses, guessedWords)
     
         
     for i, letter in enumerate(allWrongLetters):
