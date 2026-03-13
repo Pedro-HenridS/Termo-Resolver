@@ -37,30 +37,6 @@ wordList = [
 dayWord = "pedra"
 
 #teoricamente funcionando, preciso testar mais dps
-def verifiryAnsewer(word, dayWord):
-    
-    dayWordLetters = Counter(dayWord)
-
-    #0 = errado demais slc, 1 = correto, 2 = meio correto
-    correctSpace = [0,0,0,0,0]
-
-    #aqui é pra verificcar se a letra ta na posição correta
-    for x in range(5):
-        if word[x] == dayWord[x]:
-            correctSpace[x] = 1
-            dayWordLetters = dayWordLetters - Counter(dayWord[x])
-    
-    #aqui é pra ver se a letra ta na palavra, mas nao ta na posicao certa.
-    #Sim Pedro, precisa de 2 for diferente kkkkk
-    for x in range(5):
-        if word[x] in dayWordLetters:
-            correctSpace[x] = 2
-            dayWordLetters = dayWordLetters - Counter(word[x])
-
-    print(correctSpace) #printei pra testar, mas nao precisa disso, lembrete: apagar isso dps.
-    return correctSpace
-
-
 
 #Falta implementar a remoção no caso de "0" e testar dps
 def removeWord(wordList, correctLetters, previusWord):
@@ -108,9 +84,6 @@ def removeWord(wordList, correctLetters, previusWord):
         
         return newWordList
     
-
-
-
 # A fazer/pensar/nao confirmado
 def wordSimilirity():
     return 0
