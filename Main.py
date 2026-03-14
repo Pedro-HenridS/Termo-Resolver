@@ -1,8 +1,10 @@
 from Functions.VerifyAnswer import VerifyAnswer
 from Functions.GetPositions import GetPositions
-from Functions.FilterCandidates import FilterCandidatesByWrongLetters
-from Functions.FilterCandidatesByCorrectPositions import FilterCandidatesByCorrectPositions
-from Functions.FilterCandidatesByWrongPositions import FilterCandidatesByWrongPositions
+from Functions.Filters.FilterCandidates import FilterCandidatesByWrongLetters
+from Functions.Filters.FilterCandidatesByCorrectPositions import FilterCandidatesByCorrectPositions
+from Functions.Filters.FilterCandidatesByWrongPositions import FilterCandidatesByWrongPositions
+from Functions.Filters.FilterCandidatesByAbscense import FilterCandidatesByAbscense
+from Functions.Entropy.CalcEntropies import CalcEntropies
 from Infra.FetchInitialWord import FetchInitialWord
 from Infra.FetchAllWords import FetchAllWords
 
@@ -16,7 +18,7 @@ def main():
     guessedWords = []
 
     for i in range(5):
-    
+        
         guess = input("Insira sua tentativa [5 letras]: ")
         guessedWords.append(guess)
         viewTemplate, guessTemplate, wrongLetters = VerifyAnswer(guess, word)
@@ -29,18 +31,20 @@ def main():
         for i in range(len(viewGuesses)):
             print(*viewGuesses[i])
 
-        candidates = FilterCandidatesByWrongLetters(candidates, allWrongLetters)
-   
         correctPositions, wrongPositions = GetPositions(guesses, guessedWords)
+
+        #Filters 
+        candidates = FilterCandidatesByWrongLetters(candidates, allWrongLetters)
         candidates = FilterCandidatesByCorrectPositions(correctPositions, candidates)
         candidates = FilterCandidatesByWrongPositions(wrongPositions, candidates)
+        candidates = FilterCandidatesByAbscense(wrongPositions, candidates)
         
-        for candidate in candidates:
-             print(candidate)
-        
-    for i, letter in enumerate(allWrongLetters):
-            print(letter, end=" ")
+        if(i >= 1):
+            entropies = CalcEntropies(candidates)
+            bestWord = max(entropies, key=entropies.get)
 
+            print("Palavra sugerida:", bestWord)
+        
     print("Palavra correta: ", word)
 
     return 0
