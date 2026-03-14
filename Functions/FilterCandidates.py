@@ -5,6 +5,5 @@ def FilterCandidatesByWrongLetters(candidates, wrongLetters):
         if not any(letter in word for letter in wrongLetters)
     ]
 
-
     return candidatesCopy
 
