@@ -7,6 +7,8 @@ from Functions.Filters.FilterCandidatesByAbscense import FilterCandidatesByAbsce
 from Functions.Entropy.CalcEntropies import CalcEntropies
 from Infra.FetchInitialWord import FetchInitialWord
 from Infra.FetchAllWords import FetchAllWords
+from collections import Counter
+
 
 def main():
 
@@ -16,12 +18,18 @@ def main():
     viewGuesses = {}
     allWrongLetters = []
     guessedWords = []
+    lettersCount = Counter() #necessario pra função wrongPosition atualizada
+    
 
-    for i in range(5):
-        
+    
+
+    for i in range(10):
         guess = input("Insira sua tentativa [5 letras]: ")
+        if (guess in candidates) and (guess != word):
+            candidates.remove(guess)
+
         guessedWords.append(guess)
-        viewTemplate, guessTemplate, wrongLetters = VerifyAnswer(guess, word)
+        viewTemplate, guessTemplate, wrongLetters, lettersCount = VerifyAnswer(guess, word)
 
         guesses[i] = guessTemplate
         viewGuesses[i] = viewTemplate
@@ -34,10 +42,18 @@ def main():
         correctPositions, wrongPositions = GetPositions(guesses, guessedWords)
 
         #Filters 
-        candidates = FilterCandidatesByWrongLetters(candidates, allWrongLetters)
+        #candidates = FilterCandidatesByWrongLetters(candidates, allWrongLetters)
+        #Não precisa mais do WrongLetters pq agr a WrongPosition faz os dois ao mesmo tempo (por conhecidencia)
+        print("correctPositions:", correctPositions)
+        print("wrongPositions:", wrongPositions)
+        print("wrongLetters atual:", wrongLetters)
+        print("lettersCount atual:", lettersCount)
+        
         candidates = FilterCandidatesByCorrectPositions(correctPositions, candidates)
-        candidates = FilterCandidatesByWrongPositions(wrongPositions, candidates)
-        candidates = FilterCandidatesByAbscense(wrongPositions, candidates)
+        candidates = FilterCandidatesByWrongPositions(wrongPositions, candidates, wrongLetters, lettersCount)
+        print("Canditados: ", candidates)
+        #candidates = FilterCandidatesByAbscense(wrongPositions, candidates)
+        #Nao entendi o que essa função de cima faz, o programa roda dboa sem ela.
         
         if(i >= 1):
             entropies = CalcEntropies(candidates)
